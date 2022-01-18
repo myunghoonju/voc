@@ -1,7 +1,7 @@
 # vocRefund
 Scenario:: Handling client's complain and charging money to who's responsible.  
   
-// 1. voc등록   
+ 1. voc등록   
 // req  
 // voc/save  
 {  
@@ -15,7 +15,7 @@ Scenario:: Handling client's complain and charging money to who's responsible.
 // res  
 1  
   
-// 2. 운송사 귀책의 경우 페널티 등록   
+2. 운송사 귀책의 경우 페널티 등록   
 // req  
 // penalty/save  
 {  
@@ -29,19 +29,19 @@ Scenario:: Handling client's complain and charging money to who's responsible.
 // res  
 1  
   
-// 3. 기사님 push 확인 및 사인  
+3. 기사님 push 확인 및 사인  
 // req  
 // penalty/accept?vocId=1  
 // res  
 1  
   
-// 4. 배상등록 전 의의제기 여부와 기사님확인 여부  
+4. 배상등록 전 의의제기 여부와 기사님확인 여부  
 // req  
 // penalty/check?vocId=1  
 // res  
 true  
    
-// 5. 배상등록 및 페널티 완료처리(pending -> accepted)  
+5. 배상등록 및 페널티 완료처리(pending -> accepted)  
 // req  
 // refund/save  
 {  
@@ -54,7 +54,7 @@ true
 // res  
 1  
   
-// 6. 목록 api   
+6. 목록 api   
 // voc/list (voc와 페널티 정보를 조인하여 함께표시)  
 // refund/list (배상목록)  
   
