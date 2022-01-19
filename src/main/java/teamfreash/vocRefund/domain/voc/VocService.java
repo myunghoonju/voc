@@ -3,6 +3,7 @@ package teamfreash.vocRefund.domain.voc;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.ObjectUtils;
 import teamfreash.vocRefund.web.voc.dto.VocRequestDto;
 import teamfreash.vocRefund.web.voc.dto.VocResponseDto;
 
@@ -31,6 +32,9 @@ public class VocService {
                 .build();
 
         Voc saved = vocRepository.save(vocInfo);
+        if (ObjectUtils.isEmpty(saved)) {
+            return 0L;
+        }
 
         return saved.getId();
     }

@@ -30,6 +30,9 @@ public class PenaltyService {
                 .build();
 
         Penalty saved = penaltyRepository.save(penaltyInfo);
+        if (ObjectUtils.isEmpty(saved)) {
+            return 0L;
+        }
 
         return saved.getId();
     }
