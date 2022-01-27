@@ -18,7 +18,7 @@ public class Voc extends BaseTime {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
     @Column(columnDefinition = "varchar(100) not null comment 'identifier of client'")
     private String client_id;
     @Column(columnDefinition = "varchar(100) not null comment 'identifier of partner'")

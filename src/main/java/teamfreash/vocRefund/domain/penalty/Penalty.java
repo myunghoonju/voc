@@ -20,7 +20,7 @@ public class Penalty extends BaseTime {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
     @Column(columnDefinition = "varchar(100) not null comment 'accident description'")
     private String accident;
     @Column(columnDefinition = "varchar(50) not null comment 'pending, accepted, denied'")
