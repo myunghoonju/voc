@@ -5,12 +5,15 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicUpdate;
 import teamfreash.vocRefund.domain.time.BaseTime;
+import teamfreash.vocRefund.domain.voc.Voc;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 
 @Getter
 @NoArgsConstructor
@@ -18,8 +21,8 @@ import javax.persistence.Id;
 @Entity
 public class Penalty extends BaseTime {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "penalty_id")
     private Long id;
     @Column(columnDefinition = "varchar(100) not null comment 'accident description'")
     private String accident;
@@ -33,21 +36,19 @@ public class Penalty extends BaseTime {
     private String confirm_yn;
     @Column(columnDefinition = "bigint not null comment 'amount charged for penalty'")
     private long charge_amt;
-    @Column(columnDefinition = "bigint not null comment 'voc identifier'")
-    private long voc_id;
+    @OneToOne
+    @JoinColumn(name = "voc_id")
+    private Voc voc;
 
     @Builder
-    public Penalty(String accident, String status,
-                   String partner_emp_id, String claim_yn,
-                   String confirm_yn, long charge_amt,
-                   long voc_id) {
+    public Penalty(String accident, String status, String partner_emp_id, String claim_yn, String confirm_yn, long charge_amt, Voc voc) {
         this.accident = accident;
         this.status = status;
         this.partner_emp_id = partner_emp_id;
         this.claim_yn = claim_yn;
         this.confirm_yn = confirm_yn;
         this.charge_amt = charge_amt;
-        this.voc_id = voc_id;
+        this.voc = voc;
     }
 
     public void updateConfirm(String confirm_yn) {

@@ -4,12 +4,12 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import teamfreash.vocRefund.domain.voc.VocRepository;
+import teamfreash.vocRefund.domain.voc.Voc;
+import teamfreash.vocRefund.domain.voc.VocService;
 
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static teamfreash.vocRefund.constants.Accidents.DAMAGED;
 import static teamfreash.vocRefund.constants.Constants.STATUS_N;
 import static teamfreash.vocRefund.constants.ProcessStatus.PENDING;
 
@@ -21,26 +21,26 @@ class PenaltyTest {
     @Autowired
     PenaltyService penaltyService;
     @Autowired
-    VocRepository vocRepository;
+    VocService vocService;
 
     @Test
     @DisplayName("penalty 등록 테스트")
     void savePenalty() {
-        String accident = DAMAGED.getAccident();
+        Voc voc = vocService.getVoc(2L);
         String status = PENDING.getStatus();
-        String partner_emp_id = "emp111";
         String claim_yn = STATUS_N.getStatus();
         String confirmed_yn = STATUS_N.getStatus();
-        long charge_amt = 100_000L;
+        long charge_amt = 200_000L;
+
         Penalty savedPenalty = penaltyRepository.save(
                 Penalty.builder()
-                        .accident(accident)
+                        .accident(voc.getDescription())
                         .status(status)
-                        .partner_emp_id(partner_emp_id)
+                        .partner_emp_id(voc.getPartner_emp_id())
                         .claim_yn(claim_yn)
                         .confirm_yn(confirmed_yn)
                         .charge_amt(charge_amt)
-                        .voc_id(1)
+                        .voc(voc)
                         .build());
 
         List<Penalty> penaltyList = penaltyRepository.findAll();
