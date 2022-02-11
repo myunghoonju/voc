@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
+import teamfreash.vocRefund.domain.penalty.Penalty;
 import teamfreash.vocRefund.domain.penalty.PenaltyService;
 import teamfreash.vocRefund.web.refund.dto.RefundRequestDto;
 
@@ -23,12 +24,13 @@ public class RefundService {
 
     @Transactional
     public long save(RefundRequestDto refund) {
+        Penalty penalty = penaltyService.getPenalty(refund.getPenalty_id());
+
         Refund refundInfo = Refund.builder()
                 .partner_emp_id(refund.getPartner_emp_id())
                 .description(refund.getDescription())
                 .charge_amt(refund.getCharge_amt())
-                .voc_id(refund.getVoc_id())
-                .penalty_id(refund.getPenalty_id())
+                .penalty(penalty)
                 .build();
 
         Refund saved = refundRepository.save(refundInfo);
@@ -36,13 +38,13 @@ public class RefundService {
             return 0L;
         }
 
-        long vocId = saved.getVoc_id();
-        complete(vocId);
+        Penalty savedPenalty = saved.getPenalty();
+        complete(savedPenalty);
 
-        return vocId;
+        return saved.getId();
     }
 
-    private void complete(long vocId) {
-        penaltyService.complete(vocId);
+    private void complete(Penalty savedPenalty) {
+        penaltyService.complete(savedPenalty);
     }
 }

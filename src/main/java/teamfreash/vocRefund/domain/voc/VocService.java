@@ -8,6 +8,7 @@ import teamfreash.vocRefund.web.voc.dto.VocRequestDto;
 import teamfreash.vocRefund.web.voc.dto.VocResponseDto;
 
 import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -37,5 +38,11 @@ public class VocService {
         }
 
         return saved.getId();
+    }
+
+    @Transactional(readOnly = true)
+    public Voc getVoc(Long voc_id) {
+        Optional<Voc> voc = vocRepository.findById(voc_id);
+        return voc.orElse(null);
     }
 }

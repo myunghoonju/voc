@@ -28,7 +28,7 @@ class VocTest {
         String partner_id = PARTNER_HANSOL.getId();
         String accident = DAMAGED.getAccident();
         String product_id = "product111";
-        String partner_emp_id = "emp111";
+        String partner_emp_id = "emp222";
 
         Voc savedVoc = vocRepository.save(Voc.builder()
                 .client_id(client_id)

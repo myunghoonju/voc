@@ -5,7 +5,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import teamfreash.vocRefund.domain.penalty.PenaltyRepository;
+import teamfreash.vocRefund.domain.penalty.Penalty;
+import teamfreash.vocRefund.domain.penalty.PenaltyService;
 import teamfreash.vocRefund.domain.voc.VocRepository;
 
 import static teamfreash.vocRefund.constants.Accidents.DAMAGED;
@@ -16,7 +17,7 @@ class RefundTest {
     @Autowired
     RefundRepository refundRepository;
     @Autowired
-    PenaltyRepository penaltyRepository;
+    PenaltyService penaltyService;
     @Autowired
     VocRepository vocRepository;
 
@@ -29,16 +30,17 @@ class RefundTest {
         long voc_id = 1L;
         long penalty_id = 1L;
 
+        Penalty penalty = penaltyService.getPenalty(penalty_id);
+
         refundRepository.save(Refund.builder()
                         .partner_emp_id(partner_emp_id)
                         .description(description)
                         .charge_amt(charge_amt)
-                        .voc_id(voc_id)
-                        .penalty_id(penalty_id)
+                        .penalty(penalty)
                         .build());
 
         Refund savedRefund = refundRepository.findById(1L).get();
 
-        Assertions.assertThat(voc_id).isEqualTo(savedRefund.getVoc_id());
+        Assertions.assertThat(voc_id).isEqualTo(savedRefund.getPenalty().getVoc().getId());
     }
 }

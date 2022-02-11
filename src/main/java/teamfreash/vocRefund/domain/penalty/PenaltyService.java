@@ -4,7 +4,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
+import teamfreash.vocRefund.domain.voc.Voc;
+import teamfreash.vocRefund.domain.voc.VocRepository;
 import teamfreash.vocRefund.web.penalty.dto.PenaltyRequestDto;
+
+import java.util.Optional;
 
 import static teamfreash.vocRefund.constants.Constants.STATUS_N;
 import static teamfreash.vocRefund.constants.Constants.STATUS_Y;
@@ -16,9 +20,11 @@ import static teamfreash.vocRefund.constants.ProcessStatus.PENDING;
 public class PenaltyService {
 
     private final PenaltyRepository penaltyRepository;
+    private final VocRepository vocRepository;
 
     @Transactional
     public long save(PenaltyRequestDto penalty) {
+        Optional<Voc> vocResult = vocRepository.findById(penalty.getVoc_id());
         Penalty penaltyInfo = Penalty.builder()
                 .accident(penalty.getAccident())
                 .status(PENDING.getStatus())
@@ -26,7 +32,7 @@ public class PenaltyService {
                 .claim_yn(penalty.getClaim_yn())
                 .confirm_yn(penalty.getConfirmed_yn())
                 .charge_amt(penalty.getCharge_amt())
-                .voc_id(penalty.getVoc_id())
+                .voc(vocResult.get())
                 .build();
 
         Penalty saved = penaltyRepository.save(penaltyInfo);
@@ -59,9 +65,14 @@ public class PenaltyService {
     }
 
     @Transactional
-    public void complete(long vocId) {
-        Penalty penalty = penaltyRepository.findByVocId(vocId);
-        penalty.updateStatus(ACCEPTED.getStatus());
+    public void complete(Penalty savedPenalty) {
+        savedPenalty.updateStatus(ACCEPTED.getStatus());
+    }
+
+    @Transactional(readOnly = true)
+    public Penalty getPenalty(Long penalty_id) {
+        Optional<Penalty> penalty = penaltyRepository.findById(penalty_id);
+        return penalty.orElse(null);
     }
 
     private boolean isQualified(String confirm_yn, String claim_yn) {

@@ -16,8 +16,8 @@ import javax.persistence.Id;
 @Entity
 public class Voc extends BaseTime {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "voc_id")
     private Long id;
     @Column(columnDefinition = "varchar(100) not null comment 'identifier of client'")
     private String client_id;

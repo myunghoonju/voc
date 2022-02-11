@@ -25,11 +25,11 @@ public class VocRepositoryImpl implements VocRepositoryCustom {
                 .select(defaultColumn())
                 .from(voc)
                 .join(penalty)
-                .on(voc.id.eq(penalty.voc_id))
+                .on(voc.id.eq(penalty.voc.id))
                 .fetch();
     }
 
-    private QBean<VocResponseDto> defaultColumn()  {
+    private QBean<VocResponseDto> defaultColumn() {
         return Projections.fields(
                 VocResponseDto.class,
                 voc.receiver,

@@ -3,6 +3,7 @@ package teamfreash.vocRefund.domain.refund;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import teamfreash.vocRefund.domain.penalty.Penalty;
 import teamfreash.vocRefund.domain.time.BaseTime;
 
 import javax.persistence.Column;
@@ -10,14 +11,16 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 
 @Getter
 @NoArgsConstructor
 @Entity
 public class Refund extends BaseTime {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "refund_id")
     private Long id;
     @Column(columnDefinition = "varchar(100) not null comment 'identifier of employee'")
     private String partner_emp_id;
@@ -25,19 +28,15 @@ public class Refund extends BaseTime {
     private String description;
     @Column(columnDefinition = "bigint not null comment 'amount charged for penalty'")
     private long charge_amt;
-    @Column(columnDefinition = "bigint not null comment 'voc identifier'")
-    private long voc_id;
-    @Column(columnDefinition = "bigint not null comment 'penalty identifier'")
-    private long penalty_id;
+    @OneToOne
+    @JoinColumn(name = "penalty_id")
+    private Penalty penalty;
 
     @Builder
-    public Refund(String partner_emp_id, String description,
-                  long charge_amt, long voc_id,
-                  long penalty_id) {
+    public Refund(String partner_emp_id, String description, long charge_amt, Penalty penalty) {
         this.partner_emp_id = partner_emp_id;
         this.description = description;
         this.charge_amt = charge_amt;
-        this.voc_id = voc_id;
-        this.penalty_id = penalty_id;
+        this.penalty = penalty;
     }
 }
