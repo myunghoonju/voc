@@ -12,8 +12,8 @@ import static teamfreash.vocRefund.domain.penalty.QPenalty.penalty;
 import static teamfreash.vocRefund.domain.voc.QVoc.voc;
 
 public class VocRepositoryImpl implements VocRepositoryCustom {
-
-    JPAQueryFactory queryFactory;
+    
+    private final JPAQueryFactory queryFactory;
 
     public VocRepositoryImpl(EntityManager em) {
         this.queryFactory = new JPAQueryFactory(em);
